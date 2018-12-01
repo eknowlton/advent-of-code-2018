@@ -15,14 +15,12 @@ defmodule ChronalCalibration do
   def read_input
     File.stream!('input.txt')
     |> Stream.map(&String.trim/1)
+    |> Stream.map(&Integer.parse/1)
     |> Enum.to_list
   end
 
-  def hello do
-    f = 0
-    File.stream!("input.txt")
-    |> Stream.map(fn x -> x + f end)
-    |> IO.puts
+  def hello(in_list) do
+    in_list
+    |> Enum.reduce(fn x, acc -> acc + x end)
   end
-
 end
