@@ -1,7 +1,7 @@
 defmodule ChronalCalibration do
   def calibrate(in_list) do
     in_list
-    |> Enum.reduce(fn x, acc -> acc + x end)
+    |> Enum.sum()
   end
 
   def parse_input do
