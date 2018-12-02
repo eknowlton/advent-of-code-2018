@@ -1,4 +1,8 @@
 defmodule ChronalCalibration do
+  def run do
+    parse_input() |> calibrate(0, [])
+  end
+
   def calibrate([head | tail], now, frequencies) do
     frequency = now + head
     if frequency in frequencies do
