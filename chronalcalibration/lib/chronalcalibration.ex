@@ -1,15 +1,16 @@
 defmodule ChronalCalibration do
-  def calibrate(in_list, now, frequencies) when now in frequencies do
-    now
-  end
-
-  def calibrate((head | tail), now, frequencies) do
-    calibrate(tail, now + head, [now + head] + frequencies)
+  def calibrate([head | tail], now, frequencies) do
+    frequency = now + head
+    if frequency in frequencies do
+      frequency
+    else
+      calibrate(tail, frequency, [frequency] ++ frequencies)
+    end
   end
 
   def calibrate([], now, frequencies) do
     parse_input()
-    |> calibrate(frequencies)
+    |> calibrate(now, frequencies)
   end
 
   def parse_input do
