@@ -5,47 +5,50 @@ defmodule InventoryManagementSystem do
   end
 
   def checksum(in_list) do
-    with_two = 0
-    with_three = 0
-
     Enum.map(
       in_list,
       fn string_id ->
         count_occurences(string_id)
+        |> has_two_and_three()
       end
     )
-    |> Enum.map(fn x ->
-      with_two =
-        with_two +
-          Enum.find_value(
-            x,
-            0,
-            fn x ->
-              if x >= 2 do
-                1
-              end
-            end
-          )
+    |> Enum.reduce(
+      {0, 0},
+      fn word_counts, {with_two, with_three} ->
+        case word_counts do
+          {true, true} -> {with_two + 1, with_three + 1}
+          {false, true} -> {with_two + 1, with_three}
+          {true, false} -> {with_two, with_three + 1}
+          _ -> {with_two, with_three}
+        end
+      end
+    )
+    |> Tuple.to_list()
+    |> Enum.reduce(
+      1,
+      fn count, accum ->
+        accum * count
+      end
+    )
+  end
 
-      with_three =
-        with_three +
-          Enum.find_value(
-            x,
-            0,
-            fn x ->
-              if x >= 3 do
-                1
-              end
-            end
-          )
-    end)
-
-    with_two * with_three
+  def has_two_and_three(character_counts) do
+    Map.values(character_counts)
+    |> Enum.reduce(
+      {false, false},
+      fn count, {has_two, has_three} ->
+        case count do
+          2 -> {true, has_three}
+          3 -> {has_two, true}
+          _ -> {has_two, has_three}
+        end
+      end
+    )
   end
 
   def count_occurences(string_id) do
     string_id
-    |> String.graphemes()
+    |> String.codepoints()
     |> Enum.reduce(
       %{},
       fn char, accum ->
