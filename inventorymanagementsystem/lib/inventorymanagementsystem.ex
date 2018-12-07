@@ -1,10 +1,30 @@
 defmodule InventoryManagementSystem do
-  def run do
+  def find_correct_box_string_ids() do
     parse_input()
-    |> checksum()
+    |> Enum.reduce(
+      {nil, nil},
+      fn current_word, {last_word, next_word} ->
+        case result do
+          {nil, nil} -> {current_word, nil}
+          {current_word, nil} -> {}
+        end
+      end
+    )
   end
 
+  def find_string_id_off_by_one(in_list, string_id) do
+    Enum.reduce(
+      false,
+      fn current_word, result ->
+
+      end
+    )
+  end
+
+  # correct checksum is 4712
   def checksum(in_list) do
+    parse_input()
+
     Enum.map(
       in_list,
       fn string_id ->
