@@ -1,5 +1,5 @@
 defmodule InventoryManagementSystem do
-  def find_correct_box_string_ids() do
+  def part_one() do
     parse_input()
     |> Enum.reduce(
       {},
@@ -55,8 +55,7 @@ defmodule InventoryManagementSystem do
     |> List.zip()
   end
 
-  # correct checksum is 4712
-  def checksum(in_list) do
+  def part_two(in_list) do
     parse_input()
 
     Enum.map(
