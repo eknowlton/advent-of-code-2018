@@ -2,23 +2,57 @@ defmodule InventoryManagementSystem do
   def find_correct_box_string_ids() do
     parse_input()
     |> Enum.reduce(
-      {nil, nil},
-      fn current_word, {last_word, next_word} ->
-        case result do
-          {nil, nil} -> {current_word, nil}
-          {current_word, nil} -> {}
+      {},
+      fn string_id, last ->
+        find_string_id_off_by_one(string_id, last)
+      end
+    ) |> remove_different_character()
+  end
+
+  def remove_different_character({string_one, string_two}) do
+    comparable_lists(string_one, string_two)
+    |>Enum.reduce(
+      [],
+      fn {char_from_one, char_from_two}, result ->
+        if char_from_one === char_from_two do
+          result ++ [char_from_one]
+        else
+          result
+        end
+      end
+    ) |> Enum.join()
+  end
+
+  def find_string_id_off_by_one(string_id, last) do
+    Enum.reduce(
+      parse_input(),
+      last,
+      fn current_word, result ->
+        case difference(string_id, current_word) do
+          1 -> {string_id, current_word}
+          _ -> result
         end
       end
     )
   end
 
-  def find_string_id_off_by_one(in_list, string_id) do
-    Enum.reduce(
-      false,
-      fn current_word, result ->
-
+  def difference(string_one, string_two) do
+    comparable_lists(string_one, string_two)
+    |> Enum.reduce(
+      0,
+      fn pair, distance ->
+        if elem(pair, 0) != elem(pair, 1) do
+          distance + 1
+        else
+          distance
+        end
       end
     )
+  end
+
+  def comparable_lists(string_one, string_two) do
+    [String.codepoints(string_one), String.codepoints(string_two)]
+    |> List.zip()
   end
 
   # correct checksum is 4712
